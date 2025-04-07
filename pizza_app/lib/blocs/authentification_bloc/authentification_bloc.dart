@@ -9,7 +9,7 @@ part 'authentification_state.dart';
 
 class AuthentificationBloc
     extends Bloc<AuthentificationEvent, AuthentificationState> {
-  final UserRespository userRespository;
+  final UserRepository userRespository;
   late final StreamSubscription<MyUser?> _userSubscrioption;
 
   AuthentificationBloc({required this.userRespository})

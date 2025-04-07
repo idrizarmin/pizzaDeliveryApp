@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pizza_app/screens/auth/blocs/sign_in/sign_in_bloc.dart';
 
-void main() {
-  runApp(const MyAppView());
-}
+import 'blocs/authentification_bloc/authentification_bloc.dart';
+import 'screens/auth/views/welcome_screen.dart';
+import 'screens/home/views/home_screen.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});
@@ -11,36 +13,29 @@ class MyAppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pizza Delivery',
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: const HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Pizza Delivery')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to Pizza Delivery!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Navigacija na drugi ekran
-              },
-              child: const Text('Order Now'),
-            ),
-          ],
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.light(
+          surface: Colors.grey.shade200,
+          onSurface: Colors.black,
+          primary: Colors.blue,
+          onPrimary: Colors.white,
         ),
+      ),
+      home: BlocBuilder<AuthentificationBloc, AuthentificationState>(
+        builder: ((context, state) {
+          if (state.status == AuthentificationStatus.authentificated) {
+            return BlocProvider(
+              create:
+                  (context) => SignInBloc(
+                    context.read<AuthentificationBloc>().userRespository,
+                  ),
+              child: HomeScreen(),
+            );
+          } else {
+            return WelcomeScreen();
+          }
+        }),
       ),
     );
   }

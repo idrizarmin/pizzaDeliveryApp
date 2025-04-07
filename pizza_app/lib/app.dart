@@ -6,7 +6,7 @@ import 'app_view.dart';
 import 'blocs/authentification_bloc/authentification_bloc.dart';
 
 class MyApp extends StatelessWidget {
-  final UserRespository userRespository;
+  final UserRepository userRespository;
 
   const MyApp(this.userRespository, {super.key});
 
